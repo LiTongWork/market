@@ -8,6 +8,9 @@
       <div slot="search">
         <div class="search-item"></div>
       </div>
+      <div slot="table-btns">
+        <el-button type="primary" size="mini">导出所有数据</el-button>
+      </div>
       <div slot="table">
         <el-table
           border
@@ -17,17 +20,11 @@
           :header-cell-style="{ background: '#eef1f6', color: '#000000' }"
           style="width: 100%"
         >
-          <el-table-column prop="provider_name" label="客户名称" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="provider_mobile" label="客户手机号" align="center" width="110"></el-table-column>
-          <el-table-column prop="order_no" label="订单号" align="center" width></el-table-column>
-          <el-table-column prop="product_name" label="商品名称" align="center" width></el-table-column>
-          <el-table-column prop="product_code" label="商品编码" align="center" width></el-table-column>
-          <el-table-column prop="product_quantity" label="商品数量" align="center" width></el-table-column>
-          <el-table-column prop="product_price" label="商品单价" align="center" width></el-table-column>
-          <el-table-column prop="product_discount" label="商品折扣" align="center" width></el-table-column>
-          <el-table-column prop="receivable_amount" label="优惠前金额" align="center" min-width="100"></el-table-column>
-          <el-table-column prop="transaction_amount" label="实际交易金额" align="center" min-width="120"></el-table-column>
-          <el-table-column prop="delivery_time" label="交货时间" align="center" width></el-table-column>
+          <el-table-column prop="provider_name" label="供应商名称" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="provider_mobile" label="供应商手机号" align="center" width="110"></el-table-column>
+          <el-table-column prop="provider_address" label="供应商地址" align="center" min-width="120"></el-table-column>
+          <el-table-column prop="provider_type" label="供应商等级" align="center" min-width="120"></el-table-column>
+          <el-table-column prop="provider_duration" label="合作时长(月)" align="center" min-width="120"></el-table-column>
           <el-table-column prop="is_enable" label="是否正常" align="center" width></el-table-column>
           <el-table-column prop="create_time" label="创建时间" align="center" width></el-table-column>
           <el-table-column prop="modify_time" label="修改时间" align="center" width></el-table-column>
@@ -44,7 +41,7 @@
             background
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="formData.pageIndex"
+            :current-page="formData.pageNo"
             :page-sizes="[10, 20, 50, 100]"
             :page-size="formData.pageSize"
             layout="total, sizes, prev, pager, next, jumper"
@@ -67,7 +64,7 @@ export default {
   data() {
     return {
       formData: {
-        pageIndex: 1,
+        pageNo: 1,
         pageSize: 10
       },
       total: 0,
@@ -82,23 +79,23 @@ export default {
     },
     fetch() {
       console.log("fetch");
-      this.formData.pageIndex = 1;
+      this.formData.pageNo = 1;
       this.getTableData();
     },
     reset() {
       console.log("reset");
       Object.assign(this.formData, {
-        pageIndex: 1
+        pageNo: 1
       });
       this.getTableData();
     },
     handleSizeChange(val) {
-      this.formData.pageIndex = 1;
+      this.formData.pageNo = 1;
       this.formData.pageSize = val;
       this.getTableData();
     },
     handleCurrentChange(val) {
-      this.formData.pageIndex = val;
+      this.formData.pageNo = val;
       this.getTableData();
     }
   }

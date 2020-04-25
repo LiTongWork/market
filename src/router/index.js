@@ -31,28 +31,28 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 export const constantRoutes = [{
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-  },
+  path: '/login',
+  component: () => import('@/views/login/index'),
+  hidden: true
+},
 
-  
 
-  // 404 page must be placed at the end !!!
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/Home',
-    name: 'Home',
-    hidden: true,
-    children: [{
-      path: 'Home',
-      meta: {
-        isMenu: true
-      },
-      component: () => import('@/views/index')
-    }]
-  }
+
+// 404 page must be placed at the end !!!
+{
+  path: '/',
+  component: Layout,
+  redirect: '/Home',
+  name: 'Home',
+  hidden: true,
+  children: [{
+    path: 'Home',
+    meta: {
+      isMenu: true
+    },
+    component: () => import('@/views/index')
+  }]
+}
 ]
 
 export const asyncRoutes = [
@@ -201,6 +201,113 @@ export const asyncRoutes = [
         roles: ['普通用户']
       }
     }]
+  },
+  {
+    path: '/FillingMember',
+    component: Layout,
+    meta: {
+      title: '支付记录',
+      breadcrumb: false,
+      roles: ['普通用户']
+    },
+    children: [
+      {
+        path: '',
+        name: 'Integral',
+        component: () => import('@/views/FillingMember/Integral'),
+        meta: {
+          title: '会员积分',
+          roles: ['普通用户']
+        }
+      },
+      {
+        path: 'Level',
+        name: 'Level',
+        component: () => import('@/views/FillingMember/Level'),
+        meta: {
+          title: '会员等级',
+          roles: ['普通用户']
+        }
+      },
+      {
+        path: 'Time',
+        name: 'Time',
+        component: () => import('@/views/FillingMember/Time'),
+        meta: {
+          title: '会员时间',
+          roles: ['普通用户']
+        }
+      }
+    ]
+  },
+  {
+    path: '/MembersManage',
+    component: Layout,
+    meta: {
+      title: '普通用户管理',
+      breadcrumb: false,
+      roles: ['员工']
+    },
+    children: [
+      {
+        path: '',
+        name: 'MembersManage',
+        component: () => import('@/views/MembersManage/MembersManage'),
+        meta: {
+          title: '会员管理',
+          roles: ['员工']
+        }
+      },
+      {
+        path: 'NonMembersManage',
+        name: 'NonMembersManage',
+        component: () => import('@/views/MembersManage/NonMembersManage'),
+        meta: {
+          title: '非会员管理',
+          roles: ['员工']
+        }
+      },
+    ]
+  },
+  {
+    path: '/Attendance',
+    component: Layout,
+    meta: {
+      title: '考勤打卡',
+      breadcrumb: false,
+      roles: ['员工']
+    },
+    children: [
+      {
+        path: '',
+        name: 'Attendance',
+        component: () => import('@/views/Attendance/index'),
+        meta: {
+          title: '考勤打卡',
+          roles: ['员工']
+        }
+      },
+    ]
+  },
+  {
+    path: '/NoteOline',
+    component: Layout,
+    meta: {
+      title: '在线请假',
+      breadcrumb: false,
+      roles: ['员工']
+    },
+    children: [
+      {
+        path: '',
+        name: 'NoteOline',
+        component: () => import('@/views/NoteOline/index'),
+        meta: {
+          title: '在线请假',
+          roles: ['员工']
+        }
+      },
+    ]
   },
 
 

@@ -7,7 +7,7 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    roles: ['普通用户']
+    roles: ['员工']
   }
 }
 
