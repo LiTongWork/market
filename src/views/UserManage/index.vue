@@ -24,6 +24,7 @@
           <el-table-column prop="user_mobile" label="手机号" align="center" width="110"></el-table-column>
           <el-table-column prop="user_account" label="账号" align="center" width></el-table-column>
           <el-table-column prop="user_password" label="密码" align="center" width></el-table-column>
+          <el-table-column prop="user_type" label="用户角色" align="center" width></el-table-column>
           <el-table-column prop="is_member" label="是否会员" align="center" width></el-table-column>
           <el-table-column prop="member_points" label="会员积分" align="center" width></el-table-column>
           <el-table-column prop="member_level" label="会员等级" align="center" width></el-table-column>
