@@ -66,6 +66,9 @@ div:focus {
   min-height: 500px;
   margin: 20px;
 }
+.el-input, .el-select {
+  width: 180px;
+}
 // /* 滚动条样式 */
 // ::-webkit-scrollbar {
 //   width: 8px;
