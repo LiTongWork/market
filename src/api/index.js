@@ -205,4 +205,168 @@ export default {
   },
 
 
+  ShoppingList(data) { // 购物记录管理
+    return request({
+      url: '/sms/shopping_record/select',
+      method: 'post',
+      data
+    })
+  },
+
+  ShoppingListSave(data) { // 购物记录管理添加
+    return request({
+      url: '/sms/shopping_record/save',
+      method: 'post',
+      data
+    })
+  },
+
+  ShoppingListDelete(data) { // 购物记录管理删除
+    return request({
+      url: '/sms/shopping_record/delete',
+      method: 'post',
+      data
+    })
+  },
+
+  ShoppingListUpdate(data) { // 购物记录管理编辑
+    return request({
+      url: '/sms/shopping_record/update',
+      method: 'post',
+      data
+    })
+  },
+
+  ShoppingListDownload(data) { // 购物记录管理导出
+    return request({
+      url: '/sms/shopping_record/download',
+      method: 'post',
+      data
+    })
+  },
+
+
+  PaymentList(data) { // 支付记录管理
+    return request({
+      url: '/sms/payment_history/select',
+      method: 'post',
+      data
+    })
+  },
+
+  PaymentListSave(data) { // 支付记录管理添加
+    return request({
+      url: '/sms/payment_history/save',
+      method: 'post',
+      data
+    })
+  },
+
+  PaymentListDelete(data) { // 支付记录管理删除
+    return request({
+      url: '/sms/payment_history/delete',
+      method: 'post',
+      data
+    })
+  },
+
+  PaymentListUpdate(data) { // 支付记录管理编辑
+    return request({
+      url: '/sms/payment_history/update',
+      method: 'post',
+      data
+    })
+  },
+
+  PaymentListDownload(data) { // 支付记录管理导出
+    return request({
+      url: '/sms/payment_history/download',
+      method: 'post',
+      data
+    })
+  },
+
+
+  AttendanceList(data) { // 考勤管理
+    return request({
+      url: '/sms/payment_history/select',
+      method: 'post',
+      data
+    })
+  },
+
+  AttendanceListSave(data) { // 考勤管理添加
+    return request({
+      url: '/sms/payment_history/save',
+      method: 'post',
+      data
+    })
+  },
+
+  AttendanceListDelete(data) { // 考勤管理删除
+    return request({
+      url: '/sms/payment_history/delete',
+      method: 'post',
+      data
+    })
+  },
+
+  AttendanceListUpdate(data) { // 考勤管理编辑
+    return request({
+      url: '/sms/payment_history/update',
+      method: 'post',
+      data
+    })
+  },
+
+  AttendanceListDownload(data) { // 考勤管理导出
+    return request({
+      url: '/sms/payment_history/download',
+      method: 'post',
+      data
+    })
+  },
+
+
+  LeaveList(data) { // 请假管理
+    return request({
+      url: '/sms/leave/select',
+      method: 'post',
+      data
+    })
+  },
+
+  LeaveListSave(data) { // 请假管理添加
+    return request({
+      url: '/sms/leave/save',
+      method: 'post',
+      data
+    })
+  },
+
+  LeaveListDelete(data) { // 请假管理删除
+    return request({
+      url: '/sms/leave/delete',
+      method: 'post',
+      data
+    })
+  },
+
+  LeaveListUpdate(data) { // 请假管理编辑
+    return request({
+      url: '/sms/leave/update',
+      method: 'post',
+      data
+    })
+  },
+
+  LeaveListDownload(data) { // 请假管理导出
+    return request({
+      url: '/sms/leave/download',
+      method: 'post',
+      data
+    })
+  },
+
+
 }

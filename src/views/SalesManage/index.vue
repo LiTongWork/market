@@ -256,15 +256,14 @@ export default {
     sureAdd() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          alert("submit!");
           this.fullscreenLoading = true;
-          if (!!this.addDialog.form.salesManagementId) {
+          let params = JSON.parse(JSON.stringify(this.addDialog.form));
+          if (!!params.salesManagementId) {
             // 编辑
-            Api.SalesListUpdate(this.addDialog.form)
+            Api.SalesListUpdate(params)
               .then(res => {
                 console.log("res", res);
                 this.fullscreenLoading = false;
-                this.formData.pageNo = 1;
                 this.getTableData();
               })
               .catch(err => {
@@ -273,7 +272,7 @@ export default {
               });
           } else {
             // 添加
-            Api.SalesListSave(this.addDialog.form)
+            Api.SalesListSave(params)
               .then(res => {
                 console.log("res", res);
                 this.fullscreenLoading = false;

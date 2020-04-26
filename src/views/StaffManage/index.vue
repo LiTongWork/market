@@ -285,15 +285,14 @@ export default {
     sureAdd() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          alert("submit!");
           this.fullscreenLoading = true;
-          if (!!this.addDialog.form.staffManagementId) {
+          let params = JSON.parse(JSON.stringify(this.addDialog.form));
+          if (!!params.staffManagementId) {
             // 编辑
-            Api.StaffListUpdate(this.addDialog.form)
+            Api.StaffListUpdate(params)
               .then(res => {
                 console.log("res", res);
                 this.fullscreenLoading = false;
-                this.formData.pageNo = 1;
                 this.getTableData();
               })
               .catch(err => {
@@ -302,7 +301,7 @@ export default {
               });
           } else {
             // 添加
-            Api.StaffListSave(this.addDialog.form)
+            Api.StaffListSave(params)
               .then(res => {
                 console.log("res", res);
                 this.fullscreenLoading = false;

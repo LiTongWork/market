@@ -2,11 +2,16 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-console.log('process.env.VUE_APP_BASE_API', process.env.VUE_APP_BASE_API);
-
+console.log('process.env', process.env);
+let api = '';
+if (process.env.NODE_ENV === "production") {
+  aip = 'http://localhost:9999';
+} else {
+  api = ''
+}
 // create an axios instance
 const service = axios.create({
-  // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: api, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000, // request timeout
   responseType: 'json',

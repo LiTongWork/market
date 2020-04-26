@@ -146,24 +146,24 @@ export const asyncRoutes = [
       }
     }]
   },
-  {
-    path: '/PasswordManage',
-    component: Layout,
-    meta: {
-      title: '修改密码',
-      breadcrumb: false,
-      roles: ['管理员']
-    },
-    children: [{
-      path: '',
-      name: 'PasswordManage',
-      component: () => import('@/views/PasswordManage/index'),
-      meta: {
-        title: '修改密码',
-        roles: ['管理员']
-      }
-    }]
-  },
+  // {
+  //   path: '/PasswordManage',
+  //   component: Layout,
+  //   meta: {
+  //     title: '修改密码',
+  //     breadcrumb: false,
+  //     roles: ['管理员']
+  //   },
+  //   children: [{
+  //     path: '',
+  //     name: 'PasswordManage',
+  //     component: () => import('@/views/PasswordManage/index'),
+  //     meta: {
+  //       title: '修改密码',
+  //       roles: ['管理员']
+  //     }
+  //   }]
+  // },
 
   {
     path: '/ShoppingRecord',
@@ -202,73 +202,73 @@ export const asyncRoutes = [
       }
     }]
   },
-  {
-    path: '/FillingMember',
-    component: Layout,
-    meta: {
-      title: '支付记录',
-      breadcrumb: false,
-      roles: ['普通用户']
-    },
-    children: [
-      {
-        path: '',
-        name: 'Integral',
-        component: () => import('@/views/FillingMember/Integral'),
-        meta: {
-          title: '会员积分',
-          roles: ['普通用户']
-        }
-      },
-      {
-        path: 'Level',
-        name: 'Level',
-        component: () => import('@/views/FillingMember/Level'),
-        meta: {
-          title: '会员等级',
-          roles: ['普通用户']
-        }
-      },
-      {
-        path: 'Time',
-        name: 'Time',
-        component: () => import('@/views/FillingMember/Time'),
-        meta: {
-          title: '会员时间',
-          roles: ['普通用户']
-        }
-      }
-    ]
-  },
-  {
-    path: '/MembersManage',
-    component: Layout,
-    meta: {
-      title: '普通用户管理',
-      breadcrumb: false,
-      roles: ['员工']
-    },
-    children: [
-      {
-        path: '',
-        name: 'MembersManage',
-        component: () => import('@/views/MembersManage/MembersManage'),
-        meta: {
-          title: '会员管理',
-          roles: ['员工']
-        }
-      },
-      {
-        path: 'NonMembersManage',
-        name: 'NonMembersManage',
-        component: () => import('@/views/MembersManage/NonMembersManage'),
-        meta: {
-          title: '非会员管理',
-          roles: ['员工']
-        }
-      },
-    ]
-  },
+  // {
+  //   path: '/FillingMember',
+  //   component: Layout,
+  //   meta: {
+  //     title: '充会员',
+  //     breadcrumb: false,
+  //     roles: ['普通用户']
+  //   },
+  //   children: [
+  //     {
+  //       path: '',
+  //       name: 'Integral',
+  //       component: () => import('@/views/FillingMember/Integral'),
+  //       meta: {
+  //         title: '会员积分',
+  //         roles: ['普通用户']
+  //       }
+  //     },
+  //     {
+  //       path: 'Level',
+  //       name: 'Level',
+  //       component: () => import('@/views/FillingMember/Level'),
+  //       meta: {
+  //         title: '会员等级',
+  //         roles: ['普通用户']
+  //       }
+  //     },
+  //     {
+  //       path: 'Time',
+  //       name: 'Time',
+  //       component: () => import('@/views/FillingMember/Time'),
+  //       meta: {
+  //         title: '会员时间',
+  //         roles: ['普通用户']
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/MembersManage',
+  //   component: Layout,
+  //   meta: {
+  //     title: '普通用户管理',
+  //     breadcrumb: false,
+  //     roles: ['员工']
+  //   },
+  //   children: [
+  //     {
+  //       path: '',
+  //       name: 'MembersManage',
+  //       component: () => import('@/views/MembersManage/MembersManage'),
+  //       meta: {
+  //         title: '会员管理',
+  //         roles: ['员工']
+  //       }
+  //     },
+  //     {
+  //       path: 'NonMembersManage',
+  //       name: 'NonMembersManage',
+  //       component: () => import('@/views/MembersManage/NonMembersManage'),
+  //       meta: {
+  //         title: '非会员管理',
+  //         roles: ['员工']
+  //       }
+  //     },
+  //   ]
+  // },
   {
     path: '/Attendance',
     component: Layout,

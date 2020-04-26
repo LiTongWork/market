@@ -29,11 +29,12 @@ router.beforeEach(async (to, from, next) => {
     } else {
       const hasGetUserInfo = store.getters.name
       if (hasGetUserInfo) {
+        console.log('aaa')
         next()
       } else {
         try {
           // get user info
-          const ddd = await store.dispatch('user/getInfo')
+           await store.dispatch('user/getInfo')
           // generate accessible routes map based on roles
           // 通过角色过滤路由
           const accessRoutes = await store.dispatch('permission/generateRoutes', store.state.user.roles)

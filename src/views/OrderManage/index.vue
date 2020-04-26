@@ -294,15 +294,17 @@ export default {
     sureAdd() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          alert("submit!");
           this.fullscreenLoading = true;
-          if (!!this.addDialog.form.orderManagementId) {
+          let params = JSON.parse(JSON.stringify(this.addDialog.form));
+          if (params.deliveryTime === null) {
+            params.deliveryTime = "";
+          }
+          if (!!params.orderManagementId) {
             // 编辑
-            Api.OrderListUpdate(this.addDialog.form)
+            Api.OrderListUpdate(params)
               .then(res => {
                 console.log("res", res);
                 this.fullscreenLoading = false;
-                this.formData.pageNo = 1;
                 this.getTableData();
               })
               .catch(err => {
@@ -311,7 +313,7 @@ export default {
               });
           } else {
             // 添加
-            Api.OrderListSave(this.addDialog.form)
+            Api.OrderListSave(params)
               .then(res => {
                 console.log("res", res);
                 this.fullscreenLoading = false;

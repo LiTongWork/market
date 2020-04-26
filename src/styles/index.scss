@@ -67,7 +67,12 @@ div:focus {
   margin: 20px;
 }
 .el-input, .el-select {
-  width: 180px;
+  width: 200px;
+}
+.el-date-picker {
+  .el-input {
+    width: auto;
+  }
 }
 // /* 滚动条样式 */
 // ::-webkit-scrollbar {
