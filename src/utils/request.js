@@ -16,7 +16,8 @@ const service = axios.create({
   timeout: 5000, // request timeout
   responseType: 'json',
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    data: getToken() || ''
   },
   // transformRequest: [
   //   function (data) {

@@ -45,7 +45,6 @@ const actions = {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
-        setUserName(data.userName)
         resolve()
       }).catch(error => {
         reject(error)
@@ -56,7 +55,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      commit('SET_NAME', getUserName('UserName'))
+      commit('SET_NAME', '用户')
       commit('SET_AVATAR', '')
       resolve()
       // getInfo(state.token).then(response => {
@@ -86,7 +85,6 @@ const actions = {
       // resolve()
       logout(state.token).then(() => {
         removeToken() // must remove  token  first
-        removeUserName() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
         resolve()
@@ -100,7 +98,6 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
-      removeUserName() // must remove  token  first
       commit('RESET_STATE')
       resolve()
     })
