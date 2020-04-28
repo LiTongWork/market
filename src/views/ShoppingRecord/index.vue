@@ -23,7 +23,7 @@
         <el-button size="mini" @click="download">导出所有数据</el-button>
         <el-button type="primary" size="mini" @click="openAdd">添加</el-button>
       </div>
-      <div slot="table">
+      <div slot="table" v-loading="tableDataLoading">
         <el-table
           border
           stripe
@@ -32,19 +32,19 @@
           :header-cell-style="{ background: '#eef1f6', color: '#000000' }"
           style="width: 100%"
         >
-          <el-table-column prop="user_name" label="姓名" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="user_mobile" label="手机号" align="center" width="110"></el-table-column>
-          <el-table-column prop="product_name" label="商品名称" align="center" width></el-table-column>
-          <el-table-column prop="product_code" label="商品编码" align="center" width></el-table-column>
-          <el-table-column prop="product_quantity" label="商品数量" align="center" width></el-table-column>
-          <el-table-column prop="product_price" label="商品单价" align="center" width></el-table-column>
-          <el-table-column prop="product_discount" label="商品折扣" align="center" width></el-table-column>
-          <el-table-column prop="receivable_amount" label="优惠前金额" align="center" min-width="100"></el-table-column>
-          <el-table-column prop="transaction_amount" label="实际交易金额" align="center" min-width="120"></el-table-column>
-          <el-table-column prop="delivery_time" label="购物时间" align="center" width></el-table-column>
-          <el-table-column prop="is_enable" label="是否正常" align="center" width></el-table-column>
-          <el-table-column prop="create_time" label="创建时间" align="center" width></el-table-column>
-          <el-table-column prop="modify_time" label="修改时间" align="center" width></el-table-column>
+          <el-table-column prop="userName" label="姓名" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="userMobile" label="手机号" align="center" width="110"></el-table-column>
+          <el-table-column prop="productName" label="商品名称" align="center" width></el-table-column>
+          <el-table-column prop="productCode" label="商品编码" align="center" width></el-table-column>
+          <el-table-column prop="productQuantity" label="商品数量" align="center" width></el-table-column>
+          <el-table-column prop="productPrice" label="商品单价" align="center" width></el-table-column>
+          <el-table-column prop="productDiscount" label="商品折扣" align="center" width></el-table-column>
+          <el-table-column prop="receivableAmount" label="优惠前金额" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="transactionAmount" label="实际交易金额" align="center" min-width="120"></el-table-column>
+          <el-table-column prop="deliveryTime" label="购物时间" align="center" width></el-table-column>
+          <el-table-column prop="isEnable" label="是否正常" align="center" width></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" align="center" width></el-table-column>
+          <el-table-column prop="modifyTime" label="修改时间" align="center" width></el-table-column>
           <el-table-column prop="date" label="操作" align="center" fixed="right" width="180">
             <template slot-scope="scope">
               <el-button type="text" @click="openAdd(scope.row)">编辑</el-button>
@@ -239,22 +239,21 @@ export default {
       this.getTableData();
     },
     openAdd(row) {
-      let params = {};
-      if (!!row) {
+      if (!!row.shoppingRecordId) {
         this.addDialog.title = "编辑";
         this.addDialog.form = {
-          shoppingRecordId: row.shopping_record_id,
-          userName: row.user_name,
-          userMobile: row.user_mobile,
-          productName: row.product_name,
-          productCode: row.product_code,
-          productQuantity: row.product_quantity,
-          productPrice: row.product_price,
-          productDiscount: row.product_discount,
-          receivableAmount: row.receivable_amount,
-          transactionAmount: row.transaction_amount,
-          deliveryTime: row.delivery_time,
-          isEnable: row.is_enable
+          shoppingRecordId: row.shoppingRecordId,
+          userName: row.userName,
+          userMobile: row.userMobile,
+          productName: row.productName,
+          productCode: row.productCode,
+          productQuantity: row.productQuantity,
+          productPrice: row.productPrice,
+          productDiscount: row.productDiscount,
+          receivableAmount: row.receivableAmount,
+          transactionAmount: row.transactionAmount,
+          deliveryTime: row.deliveryTime,
+          isEnable: row.isEnable
         };
       } else {
         this.addDialog.title = "添加";
@@ -325,7 +324,7 @@ export default {
       }).then(() => {
         this.fullscreenLoading = true;
         Api.ShoppingListDelete({
-          shoppingRecordId: row.shopping_record_id
+          shoppingRecordId: row.shoppingRecordId
         })
           .then(res => {
             console.log("res", res);
@@ -340,7 +339,13 @@ export default {
       });
     },
     download() {
-      Api.ShoppingListDownload();
+      Api.ShoppingListDownload().then(res => {
+        if (res.data) {
+          window.open(res.data);
+        } else {
+          this.$message.warning("下载地址不能为空");
+        }
+      });
     }
   }
 };

@@ -35,7 +35,7 @@
         <el-button size="mini" @click="download">导出所有数据</el-button>
         <el-button type="primary" size="mini" @click="openAdd">添加</el-button>
       </div>
-      <div slot="table">
+      <div slot="table" v-loading="tableDataLoading">
         <el-table
           border
           stripe
@@ -44,17 +44,17 @@
           :header-cell-style="{ background: '#eef1f6', color: '#000000' }"
           style="width: 100%"
         >
-          <el-table-column prop="staff_name" label="姓名" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="staff_mobile" label="手机号" align="center" width="110"></el-table-column>
-          <el-table-column prop="leave_start_time" label="请假开始时间" align="center" width></el-table-column>
-          <el-table-column prop="leave_end_time" label="请假结束时间" align="center" width></el-table-column>
-          <el-table-column prop="leave_days" label="请假天数" align="center" width></el-table-column>
-          <el-table-column prop="leave_type" label="请假类型" align="center" width></el-table-column>
-          <el-table-column prop="is_leave" label="是否可以休假" align="center" width></el-table-column>
-          <el-table-column prop="approver_name" label="审批人员姓名" align="center" width></el-table-column>
-          <el-table-column prop="approver_mobile" label="审批人员手机号" align="center" min-width="100"></el-table-column>
-          <el-table-column prop="approver_is_agree" label="审批人是否同意" align="center" min-width="120"></el-table-column>
-          <el-table-column prop="approver_opinion" label="审批意见" align="center" width></el-table-column>
+          <el-table-column prop="staffName" label="姓名" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="staffMobile" label="手机号" align="center" width="110"></el-table-column>
+          <el-table-column prop="leaveStartTime" label="请假开始时间" align="center" width></el-table-column>
+          <el-table-column prop="leaveEndTime" label="请假结束时间" align="center" width></el-table-column>
+          <el-table-column prop="leaveDays" label="请假天数" align="center" width></el-table-column>
+          <el-table-column prop="leaveType" label="请假类型" align="center" width></el-table-column>
+          <el-table-column prop="isLeave" label="是否可以休假" align="center" width></el-table-column>
+          <el-table-column prop="approverName" label="审批人员姓名" align="center" width></el-table-column>
+          <el-table-column prop="approverMobile" label="审批人员手机号" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="approverIsAgree" label="审批人是否同意" align="center" min-width="120"></el-table-column>
+          <el-table-column prop="approverOpinion" label="审批意见" align="center" width></el-table-column>
           <el-table-column prop="date" label="操作" align="center" fixed="right" width="180">
             <template slot-scope="scope">
               <el-button type="text" @click="openAdd(scope.row)">编辑</el-button>
@@ -272,21 +272,21 @@ export default {
       this.getTableData();
     },
     openAdd(row) {
-      if (!!row) {
+      if (!!row.leaveId) {
         this.addDialog.title = "编辑";
         this.addDialog.form = {
-          leaveId: row.leave_id,
-          staffName: row.staff_name,
-          staffMobile: row.staff_mobile,
-          leaveStartTime: row.leave_start_time,
-          leaveEndTime: row.leave_end_time,
-          leaveDays: row.leave_days,
-          leaveType: row.leave_type,
-          isLeave: row.is_leave,
-          approverName: row.approver_name,
-          approverMobile: row.approver_mobile,
-          approverIsAgree: row.approver_is_agree,
-          approverOpinion: row.approver_opinion,
+          leaveId: row.leaveId,
+          staffName: row.staffName,
+          staffMobile: row.staffMobile,
+          leaveStartTime: row.leaveStartTime,
+          leaveEndTime: row.leaveEndTime,
+          leaveDays: row.leaveDays,
+          leaveType: row.leaveType,
+          isLeave: row.isLeave,
+          approverName: row.approverName,
+          approverMobile: row.approverMobile,
+          approverIsAgree: row.approverIsAgree,
+          approverOpinion: row.approverOpinion,
           isEnable: "是"
         };
       } else {
@@ -362,7 +362,7 @@ export default {
       }).then(() => {
         this.fullscreenLoading = true;
         Api.LeaveListDelete({
-          leaveId: row.leave_id
+          leaveId: row.leaveId
         })
           .then(res => {
             console.log("res", res);
@@ -377,7 +377,13 @@ export default {
       });
     },
     download() {
-      Api.LeaveListDownload();
+      Api.LeaveListDownload().then(res => {
+        if (res.data) {
+          window.open(res.data);
+        } else {
+          this.$message.warning("下载地址不能为空");
+        }
+      });
     }
   }
 };

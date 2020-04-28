@@ -4,33 +4,28 @@ import store from '@/store'
 import { getToken } from '@/utils/auth'
 console.log('process.env', process.env);
 let api = '';
-if (process.env.NODE_ENV === "production") {
-  aip = 'http://localhost:9999';
-} else {
-  api = ''
-}
+// if (process.env.NODE_ENV === "production") {
+//   api = 'http://localhost:9999';
+// } else {
+//   api = ''
+// }
 // create an axios instance
 const service = axios.create({
-  baseURL: api, // url = base url + request url
+  // baseURL: '', // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000, // request timeout
   responseType: 'json',
   headers: {
     'Content-Type': 'application/json',
-    data: getToken() || ''
   },
-  // transformRequest: [
-  //   function (data) {
-  //     console.log('data', data);
-      
-  //     let ret = '';
-  //     if (getToken()) ret += encodeURIComponent('Token') + '=' + encodeURIComponent(getToken()) + '&';
-  //     for (let it in data) {
-  //       ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&';
-  //     }
-  //     return ret;
-  //   }
-  // ],
+  transformRequest: [
+    function (data) {
+      let ret = data || {};
+      Object.assign(ret,{data: getToken() || ''})
+      ret = JSON.stringify(ret)
+      return ret;
+    }
+  ],
 })
 
 // request interceptor
@@ -67,28 +62,14 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-
+    console.log('res', res)
     // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 1111) {
+    if (res.status !== 1111) {
       Message({
         message: res.message || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
-
-      // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('user/resetToken').then(() => {
-            location.reload()
-          })
-        })
-      }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
       return res

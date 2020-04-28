@@ -35,7 +35,7 @@ export default {
 
   OrderListDownload(data) { // 订单管理导出
     return request({
-      url: '/sms/order_management/download',
+      url: '/sms/order_management/getUrl',
       method: 'post',
       data
     })
@@ -75,7 +75,7 @@ export default {
 
   ProviderListDownload(data) { // 供应商管理导出
     return request({
-      url: '/sms/provider_management/download',
+      url: '/sms/provider_management/getUrl',
       method: 'post',
       data
     })
@@ -116,7 +116,7 @@ export default {
 
   SalesListDownload(data) { // 销售管理导出
     return request({
-      url: '/sms/sales_management/download',
+      url: '/sms/sales_management/getUrl',
       method: 'post',
       data
     })
@@ -157,7 +157,7 @@ export default {
 
   StaffListDownload(data) { // 员工管理导出
     return request({
-      url: '/sms/staff_management/download',
+      url: '/sms/staff_management/getUrl',
       method: 'post',
       data
     })
@@ -198,7 +198,7 @@ export default {
 
   UserListDownload(data) { // 普通用户管理导出
     return request({
-      url: '/sms/normal_user/download',
+      url: '/sms/normal_user/getUrl',
       method: 'post',
       data
     })
@@ -239,7 +239,7 @@ export default {
 
   ShoppingListDownload(data) { // 购物记录管理导出
     return request({
-      url: '/sms/shopping_record/download',
+      url: '/sms/shopping_record/getUrl',
       method: 'post',
       data
     })
@@ -280,7 +280,7 @@ export default {
 
   PaymentListDownload(data) { // 支付记录管理导出
     return request({
-      url: '/sms/payment_history/download',
+      url: '/sms/payment_history/getUrl',
       method: 'post',
       data
     })
@@ -289,7 +289,7 @@ export default {
 
   AttendanceList(data) { // 考勤管理
     return request({
-      url: '/sms/payment_history/select',
+      url: '/sms/attendance_record/select',
       method: 'post',
       data
     })
@@ -297,7 +297,7 @@ export default {
 
   AttendanceListSave(data) { // 考勤管理添加
     return request({
-      url: '/sms/payment_history/save',
+      url: '/sms/attendance_record/save',
       method: 'post',
       data
     })
@@ -305,7 +305,7 @@ export default {
 
   AttendanceListDelete(data) { // 考勤管理删除
     return request({
-      url: '/sms/payment_history/delete',
+      url: '/sms/attendance_record/delete',
       method: 'post',
       data
     })
@@ -313,7 +313,7 @@ export default {
 
   AttendanceListUpdate(data) { // 考勤管理编辑
     return request({
-      url: '/sms/payment_history/update',
+      url: '/sms/attendance_record/update',
       method: 'post',
       data
     })
@@ -321,7 +321,7 @@ export default {
 
   AttendanceListDownload(data) { // 考勤管理导出
     return request({
-      url: '/sms/payment_history/download',
+      url: '/sms/attendance_record/getUrl',
       method: 'post',
       data
     })
@@ -362,7 +362,7 @@ export default {
 
   LeaveListDownload(data) { // 请假管理导出
     return request({
-      url: '/sms/leave/download',
+      url: '/sms/leave/getUrl',
       method: 'post',
       data
     })

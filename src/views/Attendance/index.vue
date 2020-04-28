@@ -41,7 +41,7 @@
         <el-button size="mini" @click="download">导出所有数据</el-button>
         <el-button type="primary" size="mini" @click="openAdd">添加</el-button>
       </div>
-      <div slot="table">
+      <div slot="table" v-loading="tableDataLoading">
         <el-table
           border
           stripe
@@ -50,14 +50,14 @@
           :header-cell-style="{ background: '#eef1f6', color: '#000000' }"
           style="width: 100%"
         >
-          <el-table-column prop="staff_name" label="姓名" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="staff_mobile" label="手机号" align="center" width="110"></el-table-column>
-          <el-table-column prop="work_date" label="工作日期" align="center" width></el-table-column>
-          <el-table-column prop="work_start_time" label="开始上班日期" align="center" width></el-table-column>
-          <el-table-column prop="work_end_time" label="上班结束日期" align="center" width></el-table-column>
-          <el-table-column prop="is_enable" label="是否正常" align="center" width></el-table-column>
-          <el-table-column prop="is_leave" label="是否休假" align="center" width></el-table-column>
-          <el-table-column prop="leave_type" label="休假类型" align="center" width></el-table-column>
+          <el-table-column prop="staffName" label="姓名" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="staffMobile" label="手机号" align="center" width="110"></el-table-column>
+          <el-table-column prop="workDate" label="工作日期" align="center" width></el-table-column>
+          <el-table-column prop="workStartTime" label="开始上班日期" align="center" width></el-table-column>
+          <el-table-column prop="workEndTime" label="上班结束日期" align="center" width></el-table-column>
+          <el-table-column prop="isEnable" label="是否正常" align="center" width></el-table-column>
+          <el-table-column prop="isLeave" label="是否休假" align="center" width></el-table-column>
+          <el-table-column prop="leaveType" label="休假类型" align="center" width></el-table-column>
           <el-table-column prop="date" label="操作" align="center" fixed="right" width="180">
             <template slot-scope="scope">
               <el-button type="text" @click="openAdd(scope.row)">编辑</el-button>
@@ -236,16 +236,17 @@ export default {
       this.getTableData();
     },
     openAdd(row) {
-      if (!!row) {
+      console.log('row', row)
+      if (!!row.attendanceRecordId) {
         this.addDialog.title = "编辑";
         this.addDialog.form = {
-          attendanceRecordId: row.attendance_record_id,
-          staffName: row.staff_name,
-          staffMobile: row.staff_mobile,
-          workDate: row.work_date,
-          workStartTime: row.work_start_time,
-          workEndTime: row.work_end_time,
-          isEnable: row.is_enable
+          attendanceRecordId: row.attendanceRecordId,
+          staffName: row.staffName,
+          staffMobile: row.staffMobile,
+          workDate: row.workDate,
+          workStartTime: row.workStartTime,
+          workEndTime: row.workEndTime,
+          isEnable: row.isEnable
         };
       } else {
         this.addDialog.title = "添加";
@@ -317,7 +318,7 @@ export default {
       }).then(() => {
         this.fullscreenLoading = true;
         Api.AttendanceListDelete({
-          attendanceRecordId: row.attendance_record_id
+          attendanceRecordId: row.attendanceRecordId
         })
           .then(res => {
             console.log("res", res);
@@ -332,7 +333,13 @@ export default {
       });
     },
     download() {
-      Api.AttendanceListDownload();
+      Api.AttendanceListDownload().then(res => {
+        if (res.data) {
+          window.open(res.data);
+        } else {
+          this.$message.warning("下载地址不能为空");
+        }
+      });
     }
   }
 };

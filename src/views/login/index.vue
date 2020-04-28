@@ -46,26 +46,31 @@
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
-
+      <el-form-item>
+        <el-radio-group v-model="role" @change="changeRole" style="margin-left: 10px;">
+          <el-radio label="管理员">管理员</el-radio>
+          <el-radio label="普通用户">普通用户</el-radio>
+          <el-radio label="员工">员工</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-button
         :loading="loading"
         type="primary"
         style="width:100%;margin-bottom:30px;"
         @click.native.prevent="handleLogin"
-      >Login</el-button>
+      >登录</el-button>
 
-      <div class="tips">
+      <!-- <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
         <span>password: any</span>
-      </div>
+      </div> -->
     </el-form>
-    
   </div>
 </template>
 
 <script>
 import { validUsername } from "@/utils/validate";
-
+import { getRole, setRole, removeRole } from '@/utils/auth'
 export default {
   name: "Login",
   data() {
@@ -84,6 +89,7 @@ export default {
       }
     };
     return {
+      role: this.$store.state.user.roles[0],
       loginForm: {
         username: "admin",
         password: "111111"
@@ -101,6 +107,14 @@ export default {
       redirect: undefined
     };
   },
+  computed: {
+    // role() {
+    //   return this.$store.state.user.roles[0]
+    // }
+  },
+  created() {
+    // this.$store.commit('user/SET_ROLE',this.role)
+  },
   watch: {
     $route: {
       handler: function(route) {
@@ -110,6 +124,10 @@ export default {
     }
   },
   methods: {
+    changeRole(val) {
+      setRole(val)
+      this.$store.commit('user/SET_ROLE',val)
+    },
     showPwd() {
       if (this.passwordType === "password") {
         this.passwordType = "";
@@ -127,7 +145,6 @@ export default {
           this.$store
             .dispatch("user/login", this.loginForm)
             .then(() => {
-              console.log('dd')
               this.$router.push({ path: "/" });
               this.loading = false;
             })

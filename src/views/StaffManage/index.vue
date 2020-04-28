@@ -23,7 +23,7 @@
         <el-button size="mini" @click="download">导出所有数据</el-button>
         <el-button type="primary" size="mini" @click="openAdd">添加</el-button>
       </div>
-      <div slot="table">
+      <div slot="table" v-loading="tableDataLoading">
         <el-table
           border
           stripe
@@ -32,20 +32,20 @@
           :header-cell-style="{ background: '#eef1f6', color: '#000000' }"
           style="width: 100%"
         >
-          <el-table-column prop="staff_name" label="姓名" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="staff_mobile" label="手机号" align="center" width="110"></el-table-column>
-          <el-table-column prop="staff_password" label="密码" align="center" width></el-table-column>
-          <el-table-column prop="leader_name" label="领导姓名" align="center" width></el-table-column>
-          <el-table-column prop="leader_mobile" label="领导手机号" align="center" width></el-table-column>
-          <el-table-column prop="staff_card_no" label="银行卡号" align="center" width></el-table-column>
-          <el-table-column prop="staff_card_name" label="账户姓名" align="center" width></el-table-column>
-          <el-table-column prop="staff_card_bank" label="开户行" align="center" width></el-table-column>
-          <el-table-column prop="staff_salary" label="薪资(月)" align="center" min-width="100"></el-table-column>
-          <el-table-column prop="staff_working_years" label="工作年限" align="center" min-width="120"></el-table-column>
-          <el-table-column prop="staff_address" label="住址" align="center" width></el-table-column>
-          <el-table-column prop="is_enable" label="是否正常" align="center" width></el-table-column>
-          <el-table-column prop="create_time" label="创建时间" align="center" width></el-table-column>
-          <el-table-column prop="modify_time" label="修改时间" align="center" width></el-table-column>
+          <el-table-column prop="staffName" label="姓名" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="staffMobile" label="手机号" align="center" width="110"></el-table-column>
+          <el-table-column prop="staffPassword" label="密码" align="center" width></el-table-column>
+          <el-table-column prop="leaderName" label="领导姓名" align="center" width></el-table-column>
+          <el-table-column prop="leaderMobile" label="领导手机号" align="center" width></el-table-column>
+          <el-table-column prop="staffCardNo" label="银行卡号" align="center" width></el-table-column>
+          <el-table-column prop="staffCardName" label="账户姓名" align="center" width></el-table-column>
+          <el-table-column prop="staffCardBank" label="开户行" align="center" width></el-table-column>
+          <el-table-column prop="staffSalary" label="薪资(月)" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="staffWorkingYears" label="工作年限" align="center" min-width="120"></el-table-column>
+          <el-table-column prop="staffAddress" label="住址" align="center" width></el-table-column>
+          <el-table-column prop="isEnable" label="是否正常" align="center" width></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" align="center" width></el-table-column>
+          <el-table-column prop="modifyTime" label="修改时间" align="center" width></el-table-column>
           <el-table-column prop="date" label="操作" align="center" fixed="right" width="180">
             <template slot-scope="scope">
               <el-button type="text" @click="openAdd(scope.row)">编辑</el-button>
@@ -244,23 +244,22 @@ export default {
       this.getTableData();
     },
     openAdd(row) {
-      let params = {};
-      if (!!row) {
+      if (!!row.staffManagementId) {
         this.addDialog.title = "编辑";
         this.addDialog.form = {
-          staffManagementId: row.staff_management_id,
-          staffName: row.staff_name,
-          staffMobile: row.staff_mobile,
-          staffPassword: row.staff_password,
-          leaderName: row.leader_name,
-          leaderMobile: row.leader_mobile,
-          staffCardNo: row.staff_card_no,
-          staffCardName: row.staff_card_name,
-          staffCardBank: row.staff_card_bank,
-          staffSalary: row.staff_salary,
-          staffWorkingYears: row.staff_working_years,
-          staffAddress: row.staff_address,
-          isEnable: row.is_enable
+          staffManagementId: row.staffManagementId,
+          staffName: row.staffName,
+          staffMobile: row.staffMobile,
+          staffPassword: row.staffPassword,
+          leaderName: row.leaderName,
+          leaderMobile: row.leaderMobile,
+          staffCardNo: row.staffCardNo,
+          staffCardName: row.staffCardName,
+          staffCardBank: row.staffCardBank,
+          staffSalary: row.staffSalary,
+          staffWorkingYears: row.staffWorkingYears,
+          staffAddress: row.staffAddress,
+          isEnable: row.isEnable
         };
       } else {
         this.addDialog.title = "添加";
@@ -329,7 +328,7 @@ export default {
       }).then(() => {
         this.fullscreenLoading = true;
         Api.StaffListDelete({
-          staffManagementId: row.staff_management_id
+          staffManagementId: row.staffManagementId
         })
           .then(res => {
             console.log("res", res);
@@ -344,7 +343,13 @@ export default {
       });
     },
     download() {
-      Api.StaffListDownload();
+      Api.StaffListDownload().then(res => {
+        if (res.data) {
+          window.open(res.data);
+        } else {
+          this.$message.warning("下载地址不能为空");
+        }
+      });
     }
   }
 };

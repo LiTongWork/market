@@ -26,7 +26,7 @@
         <el-button size="mini" @click="download">导出所有数据</el-button>
         <el-button type="primary" size="mini" @click="openAdd">添加</el-button>
       </div>
-      <div slot="table">
+      <div slot="table" v-loading="tableDataLoading">
         <el-table
           border
           stripe
@@ -35,14 +35,14 @@
           :header-cell-style="{ background: '#eef1f6', color: '#000000' }"
           style="width: 100%"
         >
-          <el-table-column prop="provider_name" label="供应商名称" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="provider_mobile" label="供应商手机号" align="center" width="110"></el-table-column>
-          <el-table-column prop="provider_address" label="供应商地址" align="center" min-width="120"></el-table-column>
-          <el-table-column prop="provider_type" label="供应商等级" align="center" min-width="120"></el-table-column>
-          <el-table-column prop="provider_duration" label="合作时长(月)" align="center" min-width="120"></el-table-column>
-          <el-table-column prop="is_enable" label="是否正常" align="center" width></el-table-column>
-          <el-table-column prop="create_time" label="创建时间" align="center" width></el-table-column>
-          <el-table-column prop="modify_time" label="修改时间" align="center" width></el-table-column>
+          <el-table-column prop="providerName" label="供应商名称" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="providerMobile" label="供应商手机号" align="center" width="110"></el-table-column>
+          <el-table-column prop="providerAddress" label="供应商地址" align="center" min-width="120"></el-table-column>
+          <el-table-column prop="providerType" label="供应商等级" align="center" min-width="120"></el-table-column>
+          <el-table-column prop="providerDuration" label="合作时长(月)" align="center" min-width="120"></el-table-column>
+          <el-table-column prop="isEnable" label="是否正常" align="center" width></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" align="center" width></el-table-column>
+          <el-table-column prop="modifyTime" label="修改时间" align="center" width></el-table-column>
           <el-table-column prop="date" label="操作" align="center" fixed="right" width="180">
             <template slot-scope="scope">
               <el-button type="text" @click="openAdd(scope.row)">编辑</el-button>
@@ -197,17 +197,16 @@ export default {
       this.getTableData();
     },
     openAdd(row) {
-      let params = {};
-      if (!!row) {
+      if (!!row.providerManagementId) {
         this.addDialog.title = "编辑";
         this.addDialog.form = {
-          providerManagementId: row.order_management_id,
-          providerName: row.provider_name,
-          providerMobile: row.provider_mobile,
-          providerAddress: row.provider_address,
-          providerType: row.provider_type,
-          providerDuration: row.provider_duration,
-          isEnable: row.is_enable
+          providerManagementId: row.providerManagementId,
+          providerName: row.providerName,
+          providerMobile: row.providerMobile,
+          providerAddress: row.providerAddress,
+          providerType: row.providerType,
+          providerDuration: row.providerDuration,
+          isEnable: row.isEnable
         };
       } else {
         this.addDialog.title = "添加";
@@ -270,7 +269,7 @@ export default {
       }).then(() => {
         this.fullscreenLoading = true;
         Api.ProviderListDelete({
-          providerManagementId: row.provider_management_id
+          providerManagementId: row.providerManagementId
         })
           .then(res => {
             console.log("res", res);
@@ -285,7 +284,13 @@ export default {
       });
     },
     download() {
-      Api.ProviderListDownload();
+      Api.ProviderListDownload().then(res => {
+        if (res.data) {
+          window.open(res.data);
+        } else {
+          this.$message.warning("下载地址不能为空");
+        }
+      });
     }
   }
 };

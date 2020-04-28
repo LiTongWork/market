@@ -17,7 +17,7 @@
         <el-button size="mini" @click="download">导出所有数据</el-button>
         <el-button type="primary" size="mini" @click="openAdd">添加</el-button>
       </div>
-      <div slot="table">
+      <div slot="table" v-loading="tableDataLoading">
         <el-table
           border
           stripe
@@ -26,15 +26,15 @@
           :header-cell-style="{ background: '#eef1f6', color: '#000000' }"
           style="width: 100%"
         >
-          <el-table-column prop="user_name" label="姓名" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="user_mobile" label="手机号" align="center" width="110"></el-table-column>
-          <el-table-column prop="user_account" label="账号" align="center" width></el-table-column>
-          <el-table-column prop="user_password" label="密码" align="center" width></el-table-column>
-          <el-table-column prop="user_type" label="用户角色" align="center" width></el-table-column>
-          <el-table-column prop="is_member" label="是否会员" align="center" width></el-table-column>
+          <el-table-column prop="userName" label="姓名" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="userMobile" label="手机号" align="center" width="110"></el-table-column>
+          <el-table-column prop="userAccount" label="账号" align="center" width></el-table-column>
+          <el-table-column prop="userPassword" label="密码" align="center" width></el-table-column>
+          <el-table-column prop="userType" label="用户角色" align="center" width></el-table-column>
+          <el-table-column prop="isMember" label="是否会员" align="center" width></el-table-column>
           <el-table-column prop="member_points" label="会员积分" align="center" width></el-table-column>
-          <el-table-column prop="member_level" label="会员等级" align="center" width></el-table-column>
-          <el-table-column prop="member_start_time" label="会员开始时间" align="center" width></el-table-column>
+          <el-table-column prop="memberLevel" label="会员等级" align="center" width></el-table-column>
+          <el-table-column prop="memberStartTime" label="会员开始时间" align="center" width></el-table-column>
           <el-table-column prop="address" label="地址" align="center" min-width="100"></el-table-column>
           <el-table-column prop="sex" label="性别" align="center" min-width="120"></el-table-column>
           <el-table-column prop="date" label="操作" align="center" fixed="right" width="180">
@@ -209,16 +209,15 @@ export default {
       this.getTableData();
     },
     openAdd(row) {
-      let params = {};
-      if (!!row) {
+      if (!!row.normalUserId) {
         this.addDialog.title = "编辑";
         this.addDialog.form = {
-          normalUserId: row.normal_user_id,
-          userName: row.user_name,
-          userMobile: row.user_mobile,
-          userAccount: row.user_account,
-          userPassword: row.user_password,
-          isMember: row.is_member,
+          normalUserId: row.normalUserId,
+          userName: row.userName,
+          userMobile: row.userMobile,
+          userAccount: row.userAccount,
+          userPassword: row.userPassword,
+          isMember: row.isMember,
           address: row.address,
           sex: row.sex,
           isEnable: row.is_enable
@@ -286,7 +285,7 @@ export default {
       }).then(() => {
         this.fullscreenLoading = true;
         Api.UserListDelete({
-          normalUserId: row.normal_user_id
+          normalUserId: row.normalUserId
         })
           .then(res => {
             console.log("res", res);
@@ -301,7 +300,13 @@ export default {
       });
     },
     download() {
-      Api.UserListDownload();
+      Api.UserListDownload().then(res => {
+        if (res.data) {
+          window.open(res.data);
+        } else {
+          this.$message.warning("下载地址不能为空");
+        }
+      });
     }
   }
 };

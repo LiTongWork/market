@@ -28,7 +28,7 @@
         <el-button size="mini" @click="download">导出所有数据</el-button>
         <el-button type="primary" size="mini" @click="openAdd">添加</el-button>
       </div>
-      <div slot="table">
+      <div slot="table" v-loading="tableDataLoading">
         <el-table
           border
           stripe
@@ -37,18 +37,18 @@
           :header-cell-style="{ background: '#eef1f6', color: '#000000' }"
           style="width: 100%"
         >
-          <el-table-column prop="payment_name" label="姓名" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="payment_mobile" label="手机号" align="center" width="110"></el-table-column>
-          <el-table-column prop="payment_account" label="账号" align="center" width></el-table-column>
-          <el-table-column prop="product_name" label="商品名称" align="center" width></el-table-column>
-          <el-table-column prop="product_code" label="商品编码" align="center" width></el-table-column>
-          <el-table-column prop="product_quantity" label="商品数量" align="center" width></el-table-column>
-          <el-table-column prop="product_price" label="商品单价" align="center" width></el-table-column>
-          <el-table-column prop="delivery_time" label="购物时间" align="center" width></el-table-column>
-          <el-table-column prop="transaction_amount" label="交易金额" align="center" min-width="120"></el-table-column>
-          <el-table-column prop="is_enable" label="是否正常" align="center" width></el-table-column>
-          <el-table-column prop="create_time" label="创建时间" align="center" width></el-table-column>
-          <el-table-column prop="modify_time" label="修改时间" align="center" width></el-table-column>
+          <el-table-column prop="paymentName" label="姓名" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="paymentMobile" label="手机号" align="center" width="110"></el-table-column>
+          <el-table-column prop="paymentAccount" label="账号" align="center" width></el-table-column>
+          <el-table-column prop="productName" label="商品名称" align="center" width></el-table-column>
+          <el-table-column prop="productCode" label="商品编码" align="center" width></el-table-column>
+          <el-table-column prop="productQuantity" label="商品数量" align="center" width></el-table-column>
+          <el-table-column prop="productPrice" label="商品单价" align="center" width></el-table-column>
+          <el-table-column prop="deliveryTime" label="购物时间" align="center" width></el-table-column>
+          <el-table-column prop="transactionAmount" label="交易金额" align="center" min-width="120"></el-table-column>
+          <el-table-column prop="isEnable" label="是否正常" align="center" width></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" align="center" width></el-table-column>
+          <el-table-column prop="modifyTime" label="修改时间" align="center" width></el-table-column>
           <el-table-column prop="date" label="操作" align="center" fixed="right" width="180">
             <template slot-scope="scope">
               <el-button type="text" @click="openAdd(scope.row)">编辑</el-button>
@@ -90,6 +90,9 @@
           </el-form-item>
           <el-form-item label="商品数量" prop="productQuantity">
             <el-input v-model="addDialog.form.productQuantity" clearable placeholder="商品数量"></el-input>
+          </el-form-item>
+          <el-form-item label="商品单价" prop="productPrice">
+            <el-input v-model="addDialog.form.productPrice" clearable placeholder="商品单价"></el-input>
           </el-form-item>
           <el-form-item label="购物时间" prop="deliveryTime">
             <el-date-picker
@@ -147,6 +150,7 @@ export default {
           productName: "",
           productCode: "",
           productQuantity: "",
+          productPrice: "",
           deliveryTime: "",
           isEnable: "是"
         },
@@ -168,6 +172,9 @@ export default {
           ],
           productQuantity: [
             { required: true, message: "商品数量", trigger: "blur" }
+          ],
+          productPrice: [
+            { required: true, message: "商品单价", trigger: "blur" }
           ],
           deliveryTime: [
             { required: true, message: "购物时间", trigger: "blur" }
@@ -228,18 +235,19 @@ export default {
       this.getTableData();
     },
     openAdd(row) {
-      if (!!row) {
+      if (!!row.paymentHistoryId) {
         this.addDialog.title = "编辑";
         this.addDialog.form = {
-          paymentHistoryId: row.payment_history_id,
-          paymentName: row.payment_name,
-          paymentMobile: row.payment_mobile,
-          paymentAccount: row.payment_account,
-          productName: row.product_name,
-          productCode: row.product_code,
-          productQuantity: row.product_quantity,
-          deliveryTime: row.delivery_time,
-          isEnable: row.is_enable
+          paymentHistoryId: row.paymentHistoryId,
+          paymentName: row.paymentName,
+          paymentMobile: row.paymentMobile,
+          paymentAccount: row.paymentAccount,
+          productName: row.productName,
+          productCode: row.productCode,
+          productQuantity: row.productQuantity,
+          productPrice: row.productPrice,
+          deliveryTime: row.deliveryTime,
+          isEnable: row.isEnable
         };
       } else {
         this.addDialog.title = "添加";
@@ -250,6 +258,7 @@ export default {
           productName: "",
           productCode: "",
           productQuantity: "",
+          productPrice: "",
           deliveryTime: "",
           isEnable: "是"
         };
@@ -307,7 +316,7 @@ export default {
       }).then(() => {
         this.fullscreenLoading = true;
         Api.PaymentListDelete({
-          paymentHistoryId: row.payment_history_id
+          paymentHistoryId: row.paymentHistoryId
         })
           .then(res => {
             console.log("res", res);
@@ -322,7 +331,13 @@ export default {
       });
     },
     download() {
-      Api.PaymentListDownload();
+      Api.PaymentListDownload().then(res => {
+        if (res.data) {
+          window.open(res.data);
+        } else {
+          this.$message.warning("下载地址不能为空");
+        }
+      });
     }
   }
 };

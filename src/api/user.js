@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/sms/order_management/login',
+    url: '/sms/normal_user/login',
     method: 'post',
     data
   })
@@ -18,7 +18,7 @@ export function login(data) {
 
 export function logout() {
   return request({
-    url: '/sms/order_management/loginOut',
+    url: '/sms/normal_user/loginOut',
     method: 'post'
   })
 }

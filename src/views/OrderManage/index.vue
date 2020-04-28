@@ -26,7 +26,7 @@
         <el-button size="mini" @click="download">导出所有数据</el-button>
         <el-button type="primary" size="mini" @click="openAdd">添加</el-button>
       </div>
-      <div slot="table">
+      <div slot="table" v-loading="tableDataLoading">
         <el-table
           border
           stripe
@@ -35,20 +35,20 @@
           :header-cell-style="{ background: '#eef1f6', color: '#000000' }"
           style="width: 100%"
         >
-          <el-table-column prop="provider_name" label="供应商名称" align="center" min-width="150"></el-table-column>
-          <el-table-column prop="provider_mobile" label="供应商手机号" align="center" width="110"></el-table-column>
-          <el-table-column prop="order_no" label="订单号" align="center" width></el-table-column>
-          <el-table-column prop="product_name" label="商品名称" align="center" width></el-table-column>
-          <el-table-column prop="product_code" label="商品编码" align="center" width></el-table-column>
-          <el-table-column prop="product_quantity" label="商品数量" align="center" width></el-table-column>
-          <el-table-column prop="product_price" label="商品单价" align="center" width></el-table-column>
-          <el-table-column prop="product_discount" label="商品折扣" align="center" width></el-table-column>
-          <el-table-column prop="receivable_amount" label="优惠前金额" align="center" min-width="100"></el-table-column>
-          <el-table-column prop="transaction_amount" label="实际交易金额" align="center" min-width="120"></el-table-column>
-          <el-table-column prop="delivery_time" label="交货时间" align="center" width></el-table-column>
-          <el-table-column prop="is_enable" label="是否正常" align="center" width></el-table-column>
-          <el-table-column prop="create_time" label="创建时间" align="center" width></el-table-column>
-          <el-table-column prop="modify_time" label="修改时间" align="center" width></el-table-column>
+          <el-table-column prop="providerName" label="供应商名称" align="center" min-width="150"></el-table-column>
+          <el-table-column prop="providerMobile" label="供应商手机号" align="center" width="110"></el-table-column>
+          <el-table-column prop="orderNo" label="订单号" align="center" width></el-table-column>
+          <el-table-column prop="productName" label="商品名称" align="center" width></el-table-column>
+          <el-table-column prop="productCode" label="商品编码" align="center" width></el-table-column>
+          <el-table-column prop="productQuantity" label="商品数量" align="center" width></el-table-column>
+          <el-table-column prop="productPrice" label="商品单价" align="center" width></el-table-column>
+          <el-table-column prop="productDiscount" label="商品折扣" align="center" width></el-table-column>
+          <el-table-column prop="receivableAmount" label="优惠前金额" align="center" min-width="100"></el-table-column>
+          <el-table-column prop="transactionAmount" label="实际交易金额" align="center" min-width="120"></el-table-column>
+          <el-table-column prop="deliveryTime" label="交货时间" align="center" width></el-table-column>
+          <el-table-column prop="isEnable" label="是否正常" align="center" width></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" align="center" width></el-table-column>
+          <el-table-column prop="modifyTime" label="修改时间" align="center" width></el-table-column>
           <el-table-column prop="date" label="操作" align="center" fixed="right" width="180">
             <template slot-scope="scope">
               <el-button type="text" @click="openAdd(scope.row)">编辑</el-button>
@@ -253,23 +253,22 @@ export default {
       this.getTableData();
     },
     openAdd(row) {
-      let params = {};
-      if (!!row) {
+      if (!!row.orderManagementId) {
         this.addDialog.title = "编辑";
         this.addDialog.form = {
-          orderManagementId: row.order_management_id,
-          providerName: row.provider_name,
-          providerMobile: row.provider_mobile,
-          orderNo: row.order_no,
-          productName: row.product_name,
-          productCode: row.product_code,
-          productQuantity: row.product_quantity,
-          productPrice: row.product_price,
-          productDiscount: row.product_discount,
-          receivableAmount: row.receivable_amount,
-          transactionAmount: row.transaction_amount,
-          deliveryTime: row.delivery_time,
-          isEnable: row.is_enable
+          orderManagementId: row.orderManagementId,
+          providerName: row.providerName,
+          providerMobile: row.providerMobile,
+          orderNo: row.orderNo,
+          productName: row.productName,
+          productCode: row.productCode,
+          productQuantity: row.productQuantity,
+          productPrice: row.productPrice,
+          productDiscount: row.productDiscount,
+          receivableAmount: row.receivableAmount,
+          transactionAmount: row.transactionAmount,
+          deliveryTime: row.deliveryTime,
+          isEnable: row.isEnable
         };
       } else {
         this.addDialog.title = "添加";
@@ -340,7 +339,7 @@ export default {
         type: "warning"
       }).then(() => {
         this.fullscreenLoading = true;
-        Api.OrderListDelete({ orderManagementId: row.order_management_id })
+        Api.OrderListDelete({ orderManagementId: row.orderManagementId })
           .then(res => {
             console.log("res", res);
             this.fullscreenLoading = false;
@@ -354,7 +353,13 @@ export default {
       });
     },
     download() {
-      Api.OrderListDownload();
+      Api.OrderListDownload().then(res => {
+        if (res.data) {
+          window.open(res.data);
+        } else {
+          this.$message.warning("下载地址不能为空");
+        }
+      });
     }
   }
 };
