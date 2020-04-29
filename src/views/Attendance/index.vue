@@ -201,11 +201,14 @@ export default {
         .then(res => {
           console.log("res", res);
           this.tableDataLoading = false;
-          this.tableData = res.data;
+          this.total = res.data.total;
+          this.tableData = res.data.list;
         })
         .catch(err => {
           console.log("err", err);
           this.tableDataLoading = false;
+          this.total = 0;
+          this.tableData = [];
         });
     },
     fetch() {
